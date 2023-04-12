@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trivia2openai
+  labels:
+    app: trivia2openai
+spec:
+  replicas: 1
+  selector:
+    matchLabels: 
+      name: trivia2openai
+  template:
+    metadata:
+      labels:
+        app: trivia2openai
+        name: trivia2openai
+    spec:
+      containers:
+      - env:
+        - name: URL
+          value: http://trivia-socketio.trivia.dnsb.io
+        image: jockdarock/trivia2openai:v0.0.0
+        name: trivia2openai
+        resources: {}
+        ports:
+        - containerPort: 8000
+      restartPolicy: Always

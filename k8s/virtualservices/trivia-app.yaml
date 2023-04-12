@@ -1,0 +1,18 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: trivia-app
+spec:
+  gateways:
+    - trivia-gateway
+  hosts:
+    - app.trivia.dnsb.io
+  http:
+    - route:
+        - destination:
+            host: trivia-app
+            port:
+              number: 80
+      match:
+        - uri:
+            prefix: /

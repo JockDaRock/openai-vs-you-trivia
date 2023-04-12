@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo
+  labels:
+    app: mongo
+spec:
+  replicas: 1
+  selector:
+    matchLabels: 
+      name: mongo
+  template:
+    metadata:
+      labels:
+        app: mongo
+        name: mongo
+    spec:
+      # initContainers:
+      # - name: chmod
+      #   image: debian
+      #   command:
+      #   - /bin/chown
+      #   - -R
+      #   - "1000"  # or whatever the mongo UID is, use string "1000" not 1000 due to yaml
+      #   - /data/db
+      #   volumeMounts:
+      #   - name: mongodb-data  # or whatever
+      #     mountPath: /data/db
+      containers:
+      - env:
+        - name: MONGO_INITDB_ROOT_USERNAME
+          value: admin
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          value: admin
+        - name: MONGO_INITDB_DATABASE
+          value: app
+        image: mongo:6.0.5
+        name: mongo
+        # securityContext:
+        #     privileged: true
+        resources: {}
+        volumeMounts:
+        - name: mongodb-data
+          mountPath: /data/db
+        ports:
+        - containerPort: 27017
+      restartPolicy: Always
+      volumes:
+      - name: mongodb-data
+        persistentVolumeClaim:
+          claimName: trivia-mongodb-pvc

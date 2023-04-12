@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: traefik
+  name: trivia-app
+spec:
+  rules:
+  - host: app.trivia.localhost
+    http:
+      paths:
+      - path: /
+        backend:
+          service:
+            name: trivia-app
+            port:
+              number: 80
+        pathType: Prefix

@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+    ingress.kubernetes.io/ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: letsencrypt
+  name: openai-chat-gui
+spec:
+  rules:
+  - host: openaichat.trivia.kubecon23.darock.io
+    http:
+      paths:
+      - path: /
+        backend:
+          service:
+            name: openai-chat-gui
+            port:
+              number: 80
+        pathType: Prefix
+  tls:
+  - hosts:
+    - openaichat.trivia.kubecon23.darock.io
+    secretName: tls-secret-openai-chat-gui

@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: py-openai-api
+  labels:
+    app: py-openai-api
+spec:
+  replicas: 5
+  selector:
+    matchLabels: 
+      name: py-openai-api
+  template:
+    metadata:
+      labels:
+        app: py-openai-api
+        name: py-openai-api
+    spec:
+      containers:
+      - env:
+        - name: OPENAI_API_KEY
+          value: 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
+        image: jockdarock/py-openai-chat-api:v0.0.2
+        name: py-openai-api
+        resources: {}
+        ports:
+        - containerPort: 5555
+      restartPolicy: Always

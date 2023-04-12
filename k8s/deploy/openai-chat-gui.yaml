@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openai-chat-gui
+  labels:
+    app: openai-chat-gui
+spec:
+  replicas: 5
+  selector:
+    matchLabels: 
+      name: openai-chat-gui
+  template:
+    metadata:
+      labels:
+        app: openai-chat-gui
+        name: openai-chat-gui
+    spec:
+      containers:
+      - env:
+        - name: REACT_APP_SOCKET_SERVER
+          value: https://trivia-socketio.trivia.kubecon23.darock.io
+        - name: REACT_APP_CHAT_API
+          value: https://py-openai-api.trivia.kubecon23.darock.io
+        image: jockdarock/react-openai-chat:v0.0.3
+        name: openai-chat-gui
+        resources: {}
+        ports:
+        - containerPort: 80
+      restartPolicy: Always

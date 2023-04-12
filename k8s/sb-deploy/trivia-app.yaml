@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trivia-app
+  labels:
+    app: trivia-app
+spec:
+  replicas: 5
+  selector:
+    matchLabels: 
+      name: trivia-app
+  template:
+    metadata:
+      labels:
+        app: trivia-app
+        name: trivia-app
+    spec:
+      containers:
+      - env:
+        - name: REACT_APP_SOCKET_SERVER
+          value: http://socketio.trivia-app.dnsb.io
+        - name: REACT_APP_OPENAICHAT
+          value: http://openaichat.trivia.dnsb.io
+        image: jockdarock/trivia-app:v0.0.3
+        name: trivia-app
+        resources: {}
+        ports:
+        - containerPort: 80
+      restartPolicy: Always

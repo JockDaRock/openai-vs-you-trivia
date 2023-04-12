@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+    ingress.kubernetes.io/ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: letsencrypt
+  name: py-openai-api
+spec:
+  rules:
+  - host: py-openai-api.trivia.kubecon23.darock.io
+    http:
+      paths:
+      - path: /
+        backend:
+          service:
+            name: py-openai-api
+            port:
+              number: 5555
+        pathType: Prefix
+  tls:
+  - hosts:
+    - py-openai-api.trivia.kubecon23.darock.io
+    secretName: tls-secret-py-openai-api

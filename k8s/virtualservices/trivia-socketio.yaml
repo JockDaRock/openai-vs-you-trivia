@@ -1,0 +1,18 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: trivia-socketio
+spec:
+  gateways:
+    - trivia-gateway
+  hosts:
+    - trivia-socketio.trivia.dnsb.io
+  http:
+    - route:
+        - destination:
+            host: trivia-socketio
+            port:
+              number: 8000
+      match:
+        - uri:
+            prefix: /

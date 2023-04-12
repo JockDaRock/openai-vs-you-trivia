@@ -1,0 +1,21 @@
+## Prereqs
+k3s
+preinstalled ingress
+
+## Install certbot for ingress
+
+helm repo add jetstack https://charts.jetstack.io
+helm repo update
+
+helm install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --version v1.11.0 --set installCRDs=true
+
+kubectl apply -f cluster-issuer.yaml
+
+kubectl apply -f volumes/
+
+## Change environment variables in the deploy file to match the external URLs you will assign to your deployment
+
+kubectl apply -f deploy/ && \
+kubectl apply -f svc/
+
+kubectl apply -f ing/

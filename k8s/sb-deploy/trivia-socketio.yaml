@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trivia-socketio
+  labels:
+    app: trivia-socketio
+spec:
+  replicas: 3
+  selector:
+    matchLabels: 
+      name: trivia-socketio
+  template:
+    metadata:
+      labels:
+        app: trivia-socketio
+        name: trivia-socketio
+    spec:
+      containers:
+      - image: jockdarock/trivia-app-socketio:v0.0.0
+        name: trivia-socketio
+        env:
+          - name: REDIS_HOST
+            value: redis
+          - name: PORT
+            value: '6379'
+          - name: REDIS_AUTH
+            value: 'false'
+          # - name: REDIS_PASS
+          #   value: 'hQunEM1ayQvb7v8IUHMv7zQW+ndU43PLl5OyiNdn+40='
+          - name: DEV
+            value: 'false'
+        resources: {}
+        ports:
+        - containerPort: 8000
+      restartPolicy: Always

@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+    ingress.kubernetes.io/ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: letsencrypt
+  name: trivia-socketio
+spec:
+  rules:
+  - host: trivia-socketio.trivia.kubecon23.darock.io
+    http:
+      paths:
+      - path: /
+        backend:
+          service:
+            name: trivia-socketio
+            port:
+              number: 8000
+        pathType: Prefix
+  tls:
+  - hosts:
+    - trivia-socketio.trivia.kubecon23.darock.io
+    secretName: tls-secret-trivia-socketio
